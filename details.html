@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>Contarini – Details</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+</head>
+
+<body>
+  <div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="#">Contarini</a>
+        <ul class="nav">
+          <li><a href="index.html">Overview</a></li>
+          <li class="active"><a href="#">Details</a></li>
+          <li><a href="license.html">License</a></li>
+          <li><a href="releases.html">Releases</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="page-header">
+			<h1>Contarini – Details</h1>
+			<p>Information about usage of Contarini's classes and tags.</p>
+		</div>
+
+		<section>
+			<h2>WebCrawlerInfo</h2>
+			<p>A <code>WebCrawlerInfo</code> object stores all the meta
+			information provided by a single page. It is a value object with
+			a fluent interface. Create an empty object with
+			<code>new WebCrawlerInfo()</code> and get richer info objects by
+			calling its with-methods.</p>
+			<pre>WebCrawlerInfo info = new WebCrawlerInfo().withCanonical("myCanonical.html");</pre>
+		</section>
+
+		<section>
+			<h2>WebCrawlerInfoRenderer</h2>
+			<p>The <code>WebCrawlerInfoRenderer</code> render the meta tags
+			with the information of a <code>WebCrawlerInfo</code> to an
+			arbitrary <code>Writer.</code>
+			<pre>new WebCrawlerInfoRenderer().writeMetaTagsForInfoToWriter(info, writer);</pre>
+		</section>
+
+		<section>
+			<h2>The MetaTags tag</h2>
+			<p>The <code>metaTags</code> tag renders the meta tags
+			with the information of a <code>WebCrawlerInfo</code> to a JSP.
+			<pre>&lt;%@ taglib prefix="contarini" uri="http://stefanbirkner.github.com/contarini/tags" %&gt;
+&lt;contarini:metaTags info="${info}"/&gt;</pre>
+		</section>
+  </div>
+
+  <script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-24640829-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+		  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>

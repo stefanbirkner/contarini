@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>Contarini</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+</head>
+
+<body>
+  <div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="#">Contarini</a>
+        <ul class="nav">
+          <li class="active"><a href="#">Overview</a></li>
+          <li><a href="details.html">Details</a></li>
+          <li><a href="license.html">License</a></li>
+          <li><a href="releases.html">Releases</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+		<header>
+		  <div class="hero-unit">
+		    <h1>Contarini</h1>
+		    <p>Java model and renderer for search engine meta tags (e.g.
+				alternative, canonical, description, keywords, robots).</p>
+		  </div>
+		</header>
+
+		<section>
+			<section>
+				<ol>
+					<li>
+						Add the library to your pom.xml.
+						<pre>&lt;dependency&gt;
+  &lt;groupId&gt;com.github.stefanbirkner&lt;/groupId&gt;
+  &lt;artifactId&gt;contarini&lt;/artifactId&gt;
+  &lt;version&gt;0.7.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+					</li>
+					<li>
+						Build a model of the web crawling infos.
+						<pre>WebCrawler info = new WebCrawlerInfo().withCanonical("myCanonical.html");</pre>
+					</li>
+					<li>
+						Render the meta tag in your code.
+						<pre>new WebCrawlerInfoRenderer().writeMetaTagsForInfoToWriter(info, writer);</pre>
+						Or use the tag to render it in your JSP.
+						<pre>&lt;contarini:metaTags info="${info}"/&gt;</pre>
+					</li>
+				</ol>
+			</section>
+
+			<section>
+				<p>
+		    	<a class="btn" href="https://github.com/stefanbirkner/contarini/issues">Issues</a>
+					<a class="btn" href="https://github.com/stefanbirkner/contarini">Source Repository</a>
+				</p>
+			</section>
+  </div>
+
+  <script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-24640829-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+		  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>
