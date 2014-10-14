@@ -11,13 +11,13 @@ public class WebCrawlerInfoRenderer {
             "&lt;"), new Replacement(">", "&gt;"), new Replacement("\"", "&quot;"), new Replacement("'", "&apos;"));
 
     public void writeTagsForInfoToWriter(WebCrawlerInfo info, Writer w) throws IOException {
-        if (info.canonical != null)
-            writeCanonicalToWriter(info.canonical, w);
-        if (!info.advices.isEmpty())
-            writeAdvicesToWriter(info.advices, w);
-        writeAlternatesToWriter(info.alternates, w);
-        writeMetaTagToWriterIfContentExists("description", info.description, w);
-        writeMetaTagToWriterIfContentExists("keywords", info.keywords, w);
+        if (info.getCanonical() != null)
+            writeCanonicalToWriter(info.getCanonical(), w);
+        if (!info.getAdvices().isEmpty())
+            writeAdvicesToWriter(info.getAdvices(), w);
+        writeAlternatesToWriter(info.getAlternates(), w);
+        writeMetaTagToWriterIfContentExists("description", info.getDescription(), w);
+        writeMetaTagToWriterIfContentExists("keywords", info.getKeywords(), w);
     }
 
     private void writeCanonicalToWriter(String canonical, Writer w) throws IOException {

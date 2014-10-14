@@ -23,28 +23,28 @@ public class WebCrawlerInfoTest {
     public void makesListOfAdvicesUnmodifiable() {
         thrown.expect(UnsupportedOperationException.class);
         WebCrawlerInfo info = new WebCrawlerInfo().withAdvices(DUMMY_ADVICE);
-        info.advices.add(OTHER_DUMMY_ADVICE);
+        info.getAdvices().add(OTHER_DUMMY_ADVICE);
     }
 
     @Test
     public void makesListOfAlternatesUnmodifiable() {
         thrown.expect(UnsupportedOperationException.class);
         WebCrawlerInfo info = new WebCrawlerInfo().withAlternates(DUMMY_ALTERNATE);
-        info.alternates.add(OTHER_DUMMY_ALTERNATE);
+        info.getAlternates().add(OTHER_DUMMY_ALTERNATE);
     }
 
     @Test
     public void createsEmptyInfoWithUnmodfiableListOfNoAdvices() {
         thrown.expect(UnsupportedOperationException.class);
         WebCrawlerInfo info = new WebCrawlerInfo();
-        info.advices.add(DUMMY_ADVICE);
+        info.getAdvices().add(DUMMY_ADVICE);
     }
 
     @Test
     public void createsEmptyInfoWithUnmodfiableListOfNoAlternates() {
         thrown.expect(UnsupportedOperationException.class);
         WebCrawlerInfo info = new WebCrawlerInfo();
-        info.alternates.add(DUMMY_ALTERNATE);
+        info.getAlternates().add(DUMMY_ALTERNATE);
     }
 
     @Test
