@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>contarini</artifactId>
-    <version>0.7.0-SNAPSHOT</version>
+    <version>0.7.0</version>
     <packaging>jar</packaging>
 
     <name>Contarini</name>
@@ -32,7 +32,7 @@
         <connection>scm:git:git://github.com/stefanbirkner/contarini.git</connection>
         <developerConnection>scm:git:git@github.com:stefanbirkner/contarini.git</developerConnection>
         <url>https://github.com/stefanbirkner/contarini/</url>
-      <tag>HEAD</tag>
+      <tag>contarini-0.7.0</tag>
   </scm>
 
     <properties>
