@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.github.stefanbirkner</groupId>
         <artifactId>lib-parent</artifactId>
-        <version>2</version>
+        <version>6</version>
     </parent>
 
     <artifactId>contarini</artifactId>
@@ -32,8 +32,8 @@
         <connection>scm:git:git://github.com/stefanbirkner/contarini.git</connection>
         <developerConnection>scm:git:git@github.com:stefanbirkner/contarini.git</developerConnection>
         <url>https://github.com/stefanbirkner/contarini/</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <maven.compiler.source>1.6</maven.compiler.source>
@@ -44,7 +44,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
