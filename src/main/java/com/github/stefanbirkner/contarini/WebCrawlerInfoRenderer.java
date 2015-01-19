@@ -6,8 +6,48 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
+/**
+ * Renders the HTML tags for a {@link WebCrawlerInfo} object.
+ * <table>
+ *     <caption>Tags rendered by WebCrawlerInfoRenderer</caption>
+ *     <tr>
+ *         <th>WebCrawlerInfo property</th>
+ *         <th>Output</th>
+ *     </tr>
+ *     <tr>
+ *         <td>getCanonical()</td>
+ *         <td><code>&lt;link rel="canonical" href="..."/&gt;</code></td>
+ *     </tr>
+ *     <tr>
+ *         <td>getAdvices()</td>
+ *         <td><code>&lt;meta name="robots" href="..."/&gt;</code></td>
+ *     </tr>
+ *     <tr>
+ *         <td>getAlternates()</td>
+ *         <td>
+ *             For each alternate:
+ *             <code>&lt;link rel="alternate" hreflang="..." href="..."/&gt;</code>
+ *         </td>
+ *     </tr>
+ *     <tr>
+ *         <td>getDescription()</td>
+ *         <td><code>&lt;meta name="description" href="..."/&gt;</code></td>
+ *     </tr>
+ *     <tr>
+ *         <td>getKeywords()</td>
+ *         <td><code>&lt;meta name="keywords" href="..."/&gt;</code></td>
+ *     </tr>
+ * </table>
+ * The renderer escapes the provided texts.
+ */
 public class WebCrawlerInfoRenderer {
 
+    /**
+     * Writes HTML tags to the writer according to the provided {@link WebCrawlerInfo}.
+     * @param info the {@link WebCrawlerInfo} that defines the tags.
+     * @param w the {@link Writer}.
+     * @throws IOException If an I/O error occurs.
+     */
     public void writeTagsForInfoToWriter(WebCrawlerInfo info, Writer w) throws IOException {
         TagWriter tagWriter = new TagWriter(w);
         writeTagsForInfoToTagWriter(info, tagWriter);
