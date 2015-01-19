@@ -21,7 +21,7 @@ import static java.util.Collections.emptyList;
  * </pre>
  * You don't have to set properties that you don't want to use. The tags
  * for the {@code WebCrawlerInfo} object are rendered by a
- * {@link com.github.stefanbirkner.contarini.WebCrawlerInfoRenderer}.
+ * {@link com.github.stefanbirkner.contarini.render.WebCrawlerInfoRenderer}.
  */
 public class WebCrawlerInfo {
     private static final List<WebCrawlerAdvice> NO_ADVICES = emptyList();

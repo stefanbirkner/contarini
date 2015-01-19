@@ -1,4 +1,4 @@
-package com.github.stefanbirkner.contarini;
+package com.github.stefanbirkner.contarini.render;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -6,8 +6,12 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
+import com.github.stefanbirkner.contarini.Alternate;
+import com.github.stefanbirkner.contarini.WebCrawlerAdvice;
+import com.github.stefanbirkner.contarini.WebCrawlerInfo;
+
 /**
- * Renders the HTML tags for a {@link WebCrawlerInfo} object.
+ * Renders the HTML tags for a {@link com.github.stefanbirkner.contarini.WebCrawlerInfo} object.
  * <table>
  *     <caption>Tags rendered by WebCrawlerInfoRenderer</caption>
  *     <tr>
@@ -16,40 +20,64 @@ import static java.util.Arrays.asList;
  *     </tr>
  *     <tr>
  *         <td>getCanonical()</td>
- *         <td><code>&lt;link rel="canonical" href="..."/&gt;</code></td>
+ *         <td><code>&lt;link rel="canonical" href="..."&gt;</code></td>
  *     </tr>
  *     <tr>
  *         <td>getAdvices()</td>
- *         <td><code>&lt;meta name="robots" href="..."/&gt;</code></td>
+ *         <td><code>&lt;meta name="robots" href="..."&gt;</code></td>
  *     </tr>
  *     <tr>
  *         <td>getAlternates()</td>
  *         <td>
  *             For each alternate:
- *             <code>&lt;link rel="alternate" hreflang="..." href="..."/&gt;</code>
+ *             <code>&lt;link rel="alternate" hreflang="..." href="..."&gt;</code>
  *         </td>
  *     </tr>
  *     <tr>
  *         <td>getDescription()</td>
- *         <td><code>&lt;meta name="description" href="..."/&gt;</code></td>
+ *         <td><code>&lt;meta name="description" href="..."&gt;</code></td>
  *     </tr>
  *     <tr>
  *         <td>getKeywords()</td>
- *         <td><code>&lt;meta name="keywords" href="..."/&gt;</code></td>
+ *         <td><code>&lt;meta name="keywords" href="..."&gt;</code></td>
  *     </tr>
  * </table>
- * The renderer escapes the provided texts.
+ *
+ * <h2>HTML format</h2>
+ * <p>The renderer escapes the provided texts.
+ * <p>An {@link Style} can be used to control the style of the generated
+ * HTML.
  */
 public class WebCrawlerInfoRenderer {
+    private static final Style DEFAULT_STYLE = new Style();
+    private final Style style;
+
+    /**
+     * Creates a {@code WebCrawlerInfoRenderer} that renders HTML tags
+     * with the default {@link Style}.
+     */
+    public WebCrawlerInfoRenderer() {
+        this(DEFAULT_STYLE);
+    }
+
+    /**
+     * Creates a {@code WebCrawlerInfoRenderer} that renders HTML tags
+     * with the specified {@link Style}.
+     * @param style the {@link Style} that specifies the format of the
+     *              generated HTML.
+     */
+    public WebCrawlerInfoRenderer(Style style) {
+        this.style = style;
+    }
 
     /**
      * Writes HTML tags to the writer according to the provided {@link WebCrawlerInfo}.
-     * @param info the {@link WebCrawlerInfo} that defines the tags.
+     * @param info the {@link com.github.stefanbirkner.contarini.WebCrawlerInfo} that defines the tags.
      * @param w the {@link Writer}.
      * @throws IOException If an I/O error occurs.
      */
     public void writeTagsForInfoToWriter(WebCrawlerInfo info, Writer w) throws IOException {
-        TagWriter tagWriter = new TagWriter(w);
+        TagWriter tagWriter = new TagWriter(w, style);
         writeTagsForInfoToTagWriter(info, tagWriter);
     }
 
@@ -108,9 +136,11 @@ public class WebCrawlerInfoRenderer {
         static final List<Replacement> REPLACEMENTS = asList(new Replacement("&", "&amp;"), new Replacement("<",
             "&lt;"), new Replacement(">", "&gt;"), new Replacement("\"", "&quot;"), new Replacement("'", "&apos;"));
         final Writer w;
+        final Style style;
 
-        TagWriter(Writer w) {
+        TagWriter(Writer w, Style style) {
             this.w = w;
+            this.style = style;
         }
 
         void startTag(String name) throws IOException {
@@ -139,7 +169,7 @@ public class WebCrawlerInfoRenderer {
         }
 
         void closeTag() throws IOException {
-            w.write("/>");
+            w.write(style.getVoidElementStyle().closingSuffix);
         }
 
         String escape(String content) {
