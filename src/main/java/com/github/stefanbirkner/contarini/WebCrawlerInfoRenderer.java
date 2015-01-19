@@ -7,10 +7,13 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public class WebCrawlerInfoRenderer {
-    private static final List<Replacement> REPLACEMENTS = asList(new Replacement("&", "&amp;"), new Replacement("<",
-            "&lt;"), new Replacement(">", "&gt;"), new Replacement("\"", "&quot;"), new Replacement("'", "&apos;"));
 
     public void writeTagsForInfoToWriter(WebCrawlerInfo info, Writer w) throws IOException {
+        TagWriter tagWriter = new TagWriter(w);
+        writeTagsForInfoToTagWriter(info, tagWriter);
+    }
+
+    private void writeTagsForInfoToTagWriter(WebCrawlerInfo info, TagWriter w) throws IOException {
         if (info.getCanonical() != null)
             writeCanonicalToWriter(info.getCanonical(), w);
         if (!info.getAdvices().isEmpty())
@@ -20,16 +23,15 @@ public class WebCrawlerInfoRenderer {
         writeMetaTagToWriterIfContentExists("keywords", info.getKeywords(), w);
     }
 
-    private void writeCanonicalToWriter(String canonical, Writer w) throws IOException {
-        w.write("<link");
-        writeAttribute("rel", "canonical", w);
-        writeAttribute("href", canonical, w);
-        w.write("/>");
+    private void writeCanonicalToWriter(String canonical, TagWriter w) throws IOException {
+        w.startTag("link");
+        w.writeAttribute("rel", "canonical");
+        w.writeAttribute("href", canonical);
+        w.closeTag();
     }
 
-    private void writeAdvicesToWriter(List<WebCrawlerAdvice> advices, Writer w) throws IOException {
-        String content = join(advices);
-        writeMetaTagToWriter("robots", content, w);
+    private void writeAdvicesToWriter(List<WebCrawlerAdvice> advices, TagWriter w) throws IOException {
+        w.writeMetaTag("robots", join(advices));
     }
 
     private String join(List<WebCrawlerAdvice> advices) {
@@ -44,55 +46,74 @@ public class WebCrawlerInfoRenderer {
         return sb.toString();
     }
 
-    private void writeAlternatesToWriter(List<Alternate> alternates, Writer w) throws IOException {
+    private void writeAlternatesToWriter(List<Alternate> alternates, TagWriter w) throws IOException {
         for (Alternate alternate : alternates)
             writeAlternateToWriter(alternate, w);
     }
 
-    private void writeAlternateToWriter(Alternate alternate, Writer w) throws IOException {
-        w.write("<link");
-        writeAttribute("rel", "alternate", w);
-        writeAttributeIfValueExists("hreflang", alternate.language, w);
-        writeAttribute("href", alternate.href, w);
-        w.write("/>");
+    private void writeAlternateToWriter(Alternate alternate, TagWriter w) throws IOException {
+        w.startTag("link");
+        w.writeAttribute("rel", "alternate");
+        w.writeAttributeIfValueExists("hreflang", alternate.language);
+        w.writeAttribute("href", alternate.href);
+        w.closeTag();
     }
 
-    private void writeMetaTagToWriterIfContentExists(String name, String content, Writer w) throws IOException {
+    private void writeMetaTagToWriterIfContentExists(String name, String content, TagWriter w) throws IOException {
         if (content != null)
-            writeMetaTagToWriter(name, content, w);
+            w.writeMetaTag(name, content);
     }
 
-    private void writeMetaTagToWriter(String name, String content, Writer w) throws IOException {
-        w.write("<meta");
-        writeAttribute("name", name, w);
-        writeAttribute("content", escape(content), w);
-        w.write("/>");
-    }
+    private static class TagWriter {
+        static final List<Replacement> REPLACEMENTS = asList(new Replacement("&", "&amp;"), new Replacement("<",
+            "&lt;"), new Replacement(">", "&gt;"), new Replacement("\"", "&quot;"), new Replacement("'", "&apos;"));
+        final Writer w;
 
-    private String escape(String content) {
-        for (Replacement replacement : REPLACEMENTS)
-            content = content.replace(replacement.character, replacement.escapeSequence);
-        return content;
-    }
+        TagWriter(Writer w) {
+            this.w = w;
+        }
 
-    private void writeAttributeIfValueExists(String name, String value, Writer w) throws IOException {
-        if (value != null)
-            writeAttribute(name, value, w);
-    }
+        void startTag(String name) throws IOException {
+            w.write("<");
+            w.write(name);
+        }
 
-    private void writeAttribute(String name, String value, Writer w) throws IOException {
-        w.write(" ");
-        w.write(name);
-        w.write("=\"");
-        w.write(value);
-        w.write("\"");
+        void writeAttribute(String name, String value) throws IOException {
+            w.write(" ");
+            w.write(name);
+            w.write("=\"");
+            w.write(value);
+            w.write("\"");
+        }
+
+        void writeAttributeIfValueExists(String name, String value) throws IOException {
+            if (value != null)
+                writeAttribute(name, value);
+        }
+
+        void writeMetaTag(String name, String content) throws IOException {
+            startTag("meta");
+            writeAttribute("name", name);
+            writeAttribute("content", escape(content));
+            closeTag();
+        }
+
+        void closeTag() throws IOException {
+            w.write("/>");
+        }
+
+        String escape(String content) {
+            for (Replacement replacement : REPLACEMENTS)
+                content = content.replace(replacement.character, replacement.escapeSequence);
+            return content;
+        }
     }
 
     private static class Replacement {
         final String character;
         final String escapeSequence;
 
-        public Replacement(String character, String escapeSequence) {
+        Replacement(String character, String escapeSequence) {
             this.character = character;
             this.escapeSequence = escapeSequence;
         }
