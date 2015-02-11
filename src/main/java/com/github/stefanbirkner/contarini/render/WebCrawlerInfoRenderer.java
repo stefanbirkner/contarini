@@ -7,6 +7,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 import com.github.stefanbirkner.contarini.Alternate;
+import com.github.stefanbirkner.contarini.GoogleFeature;
 import com.github.stefanbirkner.contarini.WebCrawlerAdvice;
 import com.github.stefanbirkner.contarini.WebCrawlerInfo;
 
@@ -40,6 +41,13 @@ import com.github.stefanbirkner.contarini.WebCrawlerInfo;
  *     <tr>
  *         <td>getKeywords()</td>
  *         <td><code>&lt;meta name="keywords" href="..."&gt;</code></td>
+ *     </tr>
+ *     <tr>
+ *         <td>getDisabledGoogleFeatures()</td>
+ *         <td>
+ *             For each disabled feature:
+ *             <code>&lt;meta name="google" content="..."&gt;</code>
+ *         </td>
  *     </tr>
  * </table>
  *
@@ -89,6 +97,7 @@ public class WebCrawlerInfoRenderer {
         writeAlternatesToWriter(info.getAlternates(), w);
         writeMetaTagToWriterIfContentExists("description", info.getDescription(), w);
         writeMetaTagToWriterIfContentExists("keywords", info.getKeywords(), w);
+        writeMetaTagsForDisabledGoogleFeatures(info.getDisabledGoogleFeatures(), w);
     }
 
     private void writeCanonicalToWriter(String canonical, TagWriter w) throws IOException {
@@ -130,6 +139,12 @@ public class WebCrawlerInfoRenderer {
     private void writeMetaTagToWriterIfContentExists(String name, String content, TagWriter w) throws IOException {
         if (content != null)
             w.writeMetaTag(name, content);
+    }
+
+    private void writeMetaTagsForDisabledGoogleFeatures(List<GoogleFeature> disabledFeatures, TagWriter w)
+            throws IOException {
+        for (GoogleFeature feature : disabledFeatures)
+            w.writeMetaTag("google", feature.getLabelForDisabling());
     }
 
     private static class TagWriter {

@@ -11,7 +11,7 @@ public enum CommonWebCrawlerAdvice implements WebCrawlerAdvice {
     NO_INDEX("noindex"), NO_FOLLOW("nofollow"), NONE("none"),
     NO_ARCHIVE("noarchive"), NO_SNIPPET("nosnippet"),
     DONT_USE_DESCRIPTION_FROM_OPEN_DIRECTORY_PROJECT("noodp"),
-    NO_TRANSLATE("notranslate"), NO_IMAGE_INDEX("noimageindex");
+    NO_IMAGE_INDEX("noimageindex");
 
     private final String label;
 

@@ -1,6 +1,7 @@
 package com.github.stefanbirkner.contarini.render;
 
 import com.github.stefanbirkner.contarini.Alternate;
+import com.github.stefanbirkner.contarini.GoogleFeature;
 import com.github.stefanbirkner.contarini.WebCrawlerInfo;
 import org.junit.Test;
 
@@ -9,6 +10,8 @@ import java.io.StringWriter;
 
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_ARCHIVE;
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_FOLLOW;
+import static com.github.stefanbirkner.contarini.GoogleFeature.SITELINKS_SEARCH_BOX;
+import static com.github.stefanbirkner.contarini.GoogleFeature.TRANSLATION;
 import static com.github.stefanbirkner.contarini.render.VoidElementStyle.XML_SELF_CLOSING_WITHOUT_SPACE;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -90,6 +93,14 @@ public class WebCrawlerInfoRendererTest extends WebCrawlerInfoRenderer {
         WebCrawlerInfo info = new WebCrawlerInfo().withAlternates(alternate);
         String tags = renderTagsForInfo(info);
         assertThat(tags, is(equalTo("<link rel=\"alternate\" href=\"" + FIRST_DUMMY_HREF + "\">")));
+    }
+
+    @Test
+    public void writesMetaTagsForDisabledGoogleFeatures() throws Exception {
+        WebCrawlerInfo info = new WebCrawlerInfo().disableGoogleFeatures(SITELINKS_SEARCH_BOX, TRANSLATION);
+        String tags = renderTagsForInfo(info);
+        assertThat(tags, is(equalTo("<meta name=\"google\" content=\"nositelinkssearchbox\">"
+                + "<meta name=\"google\" content=\"notranslate\">")));
     }
 
     @Test

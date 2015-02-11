@@ -17,7 +17,8 @@ import static java.util.Collections.emptyList;
  *     new Alternate("fi", "http://dummy.domain.fi/ohje"))
  *   .withCanonical("http://dummy.domain.com/help")
  *   .withDescription("This is the help page of dummy domain.")
- *   .withKeywords("help, dummy domain");
+ *   .withKeywords("help, dummy domain")
+ *   .disableGoogleFeatures({@link com.github.stefanbirkner.contarini.GoogleFeature#TRANSLATION TRANSLATION});
  * </pre>
  * You don't have to set properties that you don't want to use. The tags
  * for the {@code WebCrawlerInfo} object are rendered by a
@@ -26,18 +27,21 @@ import static java.util.Collections.emptyList;
 public class WebCrawlerInfo {
     private static final List<WebCrawlerAdvice> NO_ADVICES = emptyList();
     private static final List<Alternate> NO_ALTERNATES = emptyList();
+    private static final List<GoogleFeature> NO_GOOGLE_FEATURES = emptyList();
     private final String canonical;
     private final List<WebCrawlerAdvice> advices;
     private final List<Alternate> alternates;
     private final String description;
+    private final List<GoogleFeature> disabledGoogleFeatures;
     private final String keywords;
 
     private WebCrawlerInfo(String canonical, List<WebCrawlerAdvice> advices, List<Alternate> alternates,
-                           String description, String keywords) {
+                           String description, List<GoogleFeature> disabledGoogleFeatures, String keywords) {
         this.canonical = canonical;
         this.advices = advices;
         this.alternates = alternates;
         this.description = description;
+        this.disabledGoogleFeatures = disabledGoogleFeatures;
         this.keywords = keywords;
     }
 
@@ -53,6 +57,7 @@ public class WebCrawlerInfo {
         this.advices = NO_ADVICES;
         this.alternates = NO_ALTERNATES;
         this.description = null;
+        this.disabledGoogleFeatures = NO_GOOGLE_FEATURES;
         this.keywords = null;
     }
 
@@ -74,7 +79,7 @@ public class WebCrawlerInfo {
      * @see #getCanonical()
      */
     public WebCrawlerInfo withCanonical(String canonical) {
-        return new WebCrawlerInfo(canonical, advices, alternates, description, keywords);
+        return new WebCrawlerInfo(canonical, advices, alternates, description, disabledGoogleFeatures, keywords);
     }
 
     /**
@@ -98,7 +103,7 @@ public class WebCrawlerInfo {
      * @see #getAdvices()
      */
     public WebCrawlerInfo withAdvices(WebCrawlerAdvice... advices) {
-        return new WebCrawlerInfo(canonical, asList(advices), alternates, description, keywords);
+        return new WebCrawlerInfo(canonical, asList(advices), alternates, description, disabledGoogleFeatures, keywords);
     }
 
     /**
@@ -124,7 +129,7 @@ public class WebCrawlerInfo {
      * @see #getAlternates()
      */
     public WebCrawlerInfo withAlternates(Alternate... alternates) {
-        return new WebCrawlerInfo(canonical, advices, asList(alternates), description, keywords);
+        return new WebCrawlerInfo(canonical, advices, asList(alternates), description, disabledGoogleFeatures, keywords);
     }
 
     /**
@@ -146,7 +151,31 @@ public class WebCrawlerInfo {
      * @see #getDescription()
      */
     public WebCrawlerInfo withDescription(String description) {
-        return new WebCrawlerInfo(canonical, advices, alternates, description, keywords);
+        return new WebCrawlerInfo(canonical, advices, alternates, description, disabledGoogleFeatures, keywords);
+    }
+
+    /**
+     * Returns a list of Google features that should be disabled by
+     * meta tags like
+     * {@code <meta name="google" content="notranslate">}.
+     * @return a list of Google features that should be disabled. Never
+     * returns {@code null}.
+     * @see #disableGoogleFeatures(GoogleFeature...)
+     */
+    public List<GoogleFeature> getDisabledGoogleFeatures() {
+        return disabledGoogleFeatures;
+    }
+
+    /**
+     * Creates a new {@code WebCrawlerInfo} with a different list of
+     * Google features that should be disabled. The other properties are
+     * taken from the current object.
+     * @param features a list of Google features that should be disabled.
+     * @return a new {@code WebCrawlerInfo} object.
+     * @see #getDisabledGoogleFeatures()
+     */
+    public WebCrawlerInfo disableGoogleFeatures(GoogleFeature... features) {
+        return new WebCrawlerInfo(canonical, advices, alternates, description, asList(features), keywords);
     }
 
     /**
@@ -167,7 +196,7 @@ public class WebCrawlerInfo {
      * @see #getKeywords()
      */
     public WebCrawlerInfo withKeywords(String keywords) {
-        return new WebCrawlerInfo(canonical, advices, alternates, description, keywords);
+        return new WebCrawlerInfo(canonical, advices, alternates, description, disabledGoogleFeatures, keywords);
     }
 
     @Override
@@ -178,6 +207,7 @@ public class WebCrawlerInfo {
         result = prime * result + alternates.hashCode();
         result = prime * result + ((canonical == null) ? 0 : canonical.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + disabledGoogleFeatures.hashCode();
         result = prime * result + ((keywords == null) ? 0 : keywords.hashCode());
         return result;
     }
@@ -207,12 +237,14 @@ public class WebCrawlerInfo {
         } else if (!keywords.equals(other.keywords))
             return false;
         return advices.equals(other.advices)
-            && alternates.equals(other.alternates);
+            && alternates.equals(other.alternates)
+            && disabledGoogleFeatures.equals(other.disabledGoogleFeatures);
     }
 
     @Override
     public String toString() {
         return "WebCrawlerInfo [canonical=" + canonical + ", advices=" + advices + ", alternates=" + alternates
-                + ", description=" + description + ", keywords=" + keywords + "]";
+                + ", description=" + description + ", disabledGoogleFeatures=" + disabledGoogleFeatures
+                + ", keywords=" + keywords + "]";
     }
 }

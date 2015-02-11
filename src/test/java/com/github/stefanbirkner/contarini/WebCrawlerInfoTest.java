@@ -6,6 +6,8 @@ import org.junit.rules.ExpectedException;
 
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_ARCHIVE;
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_INDEX;
+import static com.github.stefanbirkner.contarini.GoogleFeature.SITELINKS_SEARCH_BOX;
+import static com.github.stefanbirkner.contarini.GoogleFeature.TRANSLATION;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.rules.ExpectedException.none;
@@ -34,6 +36,13 @@ public class WebCrawlerInfoTest {
     }
 
     @Test
+    public void makesListOfDisabledGoogleFeaturesUnmodifiable() {
+        thrown.expect(UnsupportedOperationException.class);
+        WebCrawlerInfo info = new WebCrawlerInfo().disableGoogleFeatures(SITELINKS_SEARCH_BOX);
+        info.getDisabledGoogleFeatures().add(TRANSLATION);
+    }
+
+    @Test
     public void createsEmptyInfoWithUnmodfiableListOfNoAdvices() {
         thrown.expect(UnsupportedOperationException.class);
         WebCrawlerInfo info = new WebCrawlerInfo();
@@ -45,6 +54,13 @@ public class WebCrawlerInfoTest {
         thrown.expect(UnsupportedOperationException.class);
         WebCrawlerInfo info = new WebCrawlerInfo();
         info.getAlternates().add(DUMMY_ALTERNATE);
+    }
+
+    @Test
+    public void createsEmptyInfoWithUnmodfiableListOfDisabledGoogleFeatures() {
+        thrown.expect(UnsupportedOperationException.class);
+        WebCrawlerInfo info = new WebCrawlerInfo();
+        info.getDisabledGoogleFeatures().add(TRANSLATION);
     }
 
     @Test
@@ -72,6 +88,13 @@ public class WebCrawlerInfoTest {
     public void isDifferentFromInfoWithOtherDescription() {
         WebCrawlerInfo firstInfo = new WebCrawlerInfo().withDescription("first description");
         WebCrawlerInfo secondInfo = new WebCrawlerInfo().withDescription("second description");
+        assertThat(firstInfo, is(not(equalTo(secondInfo))));
+    }
+
+    @Test
+    public void isDifferentFromInfoWithOtherDisabledGoogleFeatures() {
+        WebCrawlerInfo firstInfo = new WebCrawlerInfo().disableGoogleFeatures(SITELINKS_SEARCH_BOX);
+        WebCrawlerInfo secondInfo = new WebCrawlerInfo().disableGoogleFeatures(TRANSLATION);
         assertThat(firstInfo, is(not(equalTo(secondInfo))));
     }
 
