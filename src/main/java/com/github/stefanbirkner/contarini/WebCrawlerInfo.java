@@ -174,8 +174,8 @@ public class WebCrawlerInfo {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((advices == null) ? 0 : advices.hashCode());
-        result = prime * result + ((alternates == null) ? 0 : alternates.hashCode());
+        result = prime * result + advices.hashCode();
+        result = prime * result + alternates.hashCode();
         result = prime * result + ((canonical == null) ? 0 : canonical.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((keywords == null) ? 0 : keywords.hashCode());
@@ -191,16 +191,6 @@ public class WebCrawlerInfo {
         if (getClass() != obj.getClass())
             return false;
         WebCrawlerInfo other = (WebCrawlerInfo) obj;
-        if (advices == null) {
-            if (other.advices != null)
-                return false;
-        } else if (!advices.equals(other.advices))
-            return false;
-        if (alternates == null) {
-            if (other.alternates != null)
-                return false;
-        } else if (!alternates.equals(other.alternates))
-            return false;
         if (canonical == null) {
             if (other.canonical != null)
                 return false;
@@ -216,7 +206,8 @@ public class WebCrawlerInfo {
                 return false;
         } else if (!keywords.equals(other.keywords))
             return false;
-        return true;
+        return advices.equals(other.advices)
+            && alternates.equals(other.alternates);
     }
 
     @Override
