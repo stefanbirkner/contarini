@@ -3,33 +3,44 @@ layout: index
 title: Contarini 
 description: Java model and renderer for search engine meta tags (e.g. alternative, canonical, description, keywords, robots).
 ---
-		<section>
-			<section>
-				<ol>
-					<li>
-						Add the library to your pom.xml.
-						<pre>&lt;dependency&gt;
+<section>Most web applications render tags that provide information for web
+crawlers such as meta-robots, canonical and meta-description. Unfortunately
+everyone has to write its own code for rendering this stuff. Contarini relieves
+you from this burden. You create an object with the necessary information and
+Contarini's well-tested renderer creates the HTML.</section>
+
+<h2>How-to</h2>
+<section>
+	<ol>
+		<li>
+			Add the library to your pom.xml.
+			<pre>&lt;dependency&gt;
   &lt;groupId&gt;com.github.stefanbirkner&lt;/groupId&gt;
   &lt;artifactId&gt;contarini&lt;/artifactId&gt;
   &lt;version&gt;0.7.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
-					</li>
-					<li>
-						Build a model of the web crawling infos.
-						<pre>WebCrawler info = new WebCrawlerInfo().withCanonical("myCanonical.html");</pre>
-					</li>
-					<li>
-						Render the meta tag in your code.
-						<pre>new WebCrawlerInfoRenderer().writeMetaTagsForInfoToWriter(info, writer);</pre>
-						Or use the tag to render it in your JSP.
-						<pre>&lt;contarini:metaTags info="${info}"/&gt;</pre>
-					</li>
-				</ol>
-			</section>
+		</li>
+		<li>
+			Build a model of the web crawler infos.
+			<pre>WebCrawlerInfo info = new WebCrawlerInfo().withCanonical("myCanonical.html");</pre>
+		</li>
+		<li>
+			Render the tags.
+			<pre>new WebCrawlerInfoRenderer().writeMetaTagsForInfoToWriter(info, writer);</pre>
+		</li>
+	</ol>
+</section>
 
-			<section>
-				<p>
-		    	<a class="btn" href="https://github.com/stefanbirkner/contarini/issues">Issues</a>
-					<a class="btn" href="https://github.com/stefanbirkner/contarini">Source Repository</a>
-				</p>
-			</section>
+<h2>JSP Support</h2>
+<section>
+	<p>There is a JSP tag that renders the <code>WebCrawlerInfo</code>. (It
+uses the <code>WebCrawlerInfoRenderer</code> internally.) Just add another
+dependency to your project.</p>
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;com.github.stefanbirkner&lt;/groupId&gt;
+  &lt;artifactId&gt;contarini-jsp&lt;/artifactId&gt;
+  &lt;version&gt;0.1.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+<p>Now you can use the tag to render the info within the JSP.</p>
+<pre>&lt;contarini:metaTags info="${info}"/&gt;</pre>
+</section>
