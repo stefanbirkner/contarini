@@ -3,11 +3,52 @@ layout: index
 title: Contarini 
 description: Java model and renderer for search engine meta tags (e.g. alternative, canonical, description, keywords, robots).
 ---
-<section>Most web applications render tags that provide information for web
+<div class="container-fluid">
+  <section>Most web applications render tags that provide information for web
 crawlers such as meta-robots, canonical and meta-description. Unfortunately
 everyone has to write its own code for rendering this stuff. Contarini relieves
 you from this burden. You create an object with the necessary information and
 Contarini's well-tested renderer creates the HTML.</section>
+  <div class="row">
+    <div class="col-md-6">
+      <h3>The code you write</h3>
+      {% highlight java %}import com.github.stefanbirkner.contarini.WebCrawlerInfo;
+import com.github.stefanbirkner.contarini.render.*;
+
+import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.*;
+import static com.github.stefanbirkner.contarini.GoogleFeature.*;
+import static com.github.stefanbirkner.contarini.render.VoidElementStyle.*;
+…
+
+WebCrawlerInfo info = new WebCrawlerInfo()
+    .withCanonical("http://your.domain/canonical")
+    .withDescription("dummy description")
+    .withKeywords("first keyword, second keyword")
+    .withAdvices(NO_ARCHIVE, NO_FOLLOW)
+    .withAlternates(
+        new Alternate("en-gb", "http://your.domain.co.uk/page")
+        new Alternate("de", "http://your.domain.de/seite"))
+    .disableGoogleFeatures(SITELINKS_SEARCH_BOX, TRANSLATION);
+Style style = new Style().withVoidElementStyle(HTML_VOID);
+WebCrawlerInfoRenderer renderer = new WebCrawlerInfoRenderer(style);
+StringWriter html = new StringWriter();
+renderer.write(info, html);
+      {% endhighlight %}
+    </div>
+    <div class="col-md-6">
+      <h3>The HTML created by Contarini</h3>
+      {% highlight html %}<link rel="canonical" href="http://your.domain/canonical">
+<meta name="description" content="dummy description">
+<meta name="keywords" content="first keyword, second keyword">
+<meta name="robots" content="noarchive, nofollow">
+<link rel="alternate" hreflang="en-gb" href="http://your.domain.co.uk/page">
+<link rel="alternate" hreflang="de" href="http://your.domain.de/seite">
+<meta name="google" content="nositelinkssearchbox">
+<meta name="google" content="notranslate">
+{% endhighlight %}
+    </div>
+  </div>
+</div>
 
 <h2>How-to</h2>
 <section>
