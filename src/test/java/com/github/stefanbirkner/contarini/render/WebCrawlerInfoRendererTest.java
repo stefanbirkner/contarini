@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import static com.github.stefanbirkner.contarini.Alternate.alternateLanguage;
+import static com.github.stefanbirkner.contarini.Alternate.alternateMedia;
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_ARCHIVE;
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_FOLLOW;
 import static com.github.stefanbirkner.contarini.GoogleFeature.SITELINKS_SEARCH_BOX;
@@ -74,9 +76,27 @@ public class WebCrawlerInfoRendererTest extends WebCrawlerInfoRenderer {
     }
 
     @Test
+    public void writesAlternateLanguage() throws Exception {
+        Alternate alternate = alternateLanguage("dummy language", "http://dummy.domain/path");
+        WebCrawlerInfo info = new WebCrawlerInfo().withAlternates(alternate);
+        String tags = renderTagsForInfo(info);
+        assertThat(tags).isEqualTo(
+            "<link rel=\"alternate\" hreflang=\"dummy language\" href=\"http://dummy.domain/path\">");
+    }
+
+    @Test
+    public void writesAlternateMedia() throws Exception {
+        Alternate alternate = alternateMedia("dummy media", "http://dummy.domain/path");
+        WebCrawlerInfo info = new WebCrawlerInfo().withAlternates(alternate);
+        String tags = renderTagsForInfo(info);
+        assertThat(tags).isEqualTo(
+            "<link rel=\"alternate\" media=\"dummy media\" href=\"http://dummy.domain/path\">");
+    }
+
+    @Test
     public void writesTwoAlternates() throws Exception {
-        Alternate firstAlternate = new Alternate(FIRST_DUMMY_LANGUAGE, FIRST_DUMMY_HREF);
-        Alternate secondAlternate = new Alternate(SECOND_DUMMY_LANGUAGE, SECOND_DUMMY_HREF);
+        Alternate firstAlternate = alternateLanguage(FIRST_DUMMY_LANGUAGE, FIRST_DUMMY_HREF);
+        Alternate secondAlternate = alternateLanguage(SECOND_DUMMY_LANGUAGE, SECOND_DUMMY_HREF);
         WebCrawlerInfo info = new WebCrawlerInfo().withAlternates(firstAlternate, secondAlternate);
         String tags = renderTagsForInfo(info);
         assertThat(tags).isEqualTo("<link rel=\"alternate\" hreflang=\"" + FIRST_DUMMY_LANGUAGE + "\" href=\""
@@ -85,7 +105,7 @@ public class WebCrawlerInfoRendererTest extends WebCrawlerInfoRenderer {
     }
 
     @Test
-    public void writesAlternateWithoutLanguage() throws Exception {
+    public void writesAlternateWithHrefOnly() throws Exception {
         Alternate alternate = new Alternate(FIRST_DUMMY_HREF);
         WebCrawlerInfo info = new WebCrawlerInfo().withAlternates(alternate);
         String tags = renderTagsForInfo(info);

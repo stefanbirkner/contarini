@@ -132,6 +132,7 @@ public class WebCrawlerInfoRenderer {
         w.startTag("link");
         w.writeAttribute("rel", "alternate");
         w.writeAttributeIfValueExists("hreflang", alternate.language);
+        w.writeAttributeIfValueExists("media", alternate.media);
         w.writeAttribute("href", alternate.href);
         w.closeTag();
     }

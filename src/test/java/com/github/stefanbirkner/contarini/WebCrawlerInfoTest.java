@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static com.github.stefanbirkner.contarini.Alternate.alternateLanguage;
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_ARCHIVE;
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_INDEX;
 import static com.github.stefanbirkner.contarini.GoogleFeature.SITELINKS_SEARCH_BOX;
@@ -14,8 +15,8 @@ import static org.junit.rules.ExpectedException.none;
 public class WebCrawlerInfoTest {
     private static final WebCrawlerAdvice DUMMY_ADVICE = NO_ARCHIVE;
     private static final WebCrawlerAdvice OTHER_DUMMY_ADVICE = NO_INDEX;
-    private static final Alternate DUMMY_ALTERNATE = new Alternate("language", "href");
-    private static final Alternate OTHER_DUMMY_ALTERNATE = new Alternate("another language", "another href");
+    private static final Alternate DUMMY_ALTERNATE = alternateLanguage("language", "href");
+    private static final Alternate OTHER_DUMMY_ALTERNATE = alternateLanguage("another language", "another href");
 
     @Rule
     public final ExpectedException thrown = none();

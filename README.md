@@ -15,7 +15,7 @@ Contarini is available from [Maven Central](http://search.maven.org/).
     <dependency>
       <groupId>com.github.stefanbirkner</groupId>
       <artifactId>contarini</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0</version>
     </dependency>
 
 
