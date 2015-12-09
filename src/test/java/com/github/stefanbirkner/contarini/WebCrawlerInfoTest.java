@@ -8,8 +8,7 @@ import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_ARCHI
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_INDEX;
 import static com.github.stefanbirkner.contarini.GoogleFeature.SITELINKS_SEARCH_BOX;
 import static com.github.stefanbirkner.contarini.GoogleFeature.TRANSLATION;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.rules.ExpectedException.none;
 
 public class WebCrawlerInfoTest {
@@ -67,41 +66,41 @@ public class WebCrawlerInfoTest {
     public void isDifferentFromInfoWithOtherAdvices() {
         WebCrawlerInfo firstInfo = new WebCrawlerInfo().withAdvices(DUMMY_ADVICE);
         WebCrawlerInfo secondInfo = new WebCrawlerInfo().withAdvices(OTHER_DUMMY_ADVICE);
-        assertThat(firstInfo, is(not(equalTo(secondInfo))));
+        assertThat(firstInfo).isNotEqualTo(secondInfo);
     }
 
     @Test
     public void isDifferentFromInfoWithOtherAlternates() {
         WebCrawlerInfo firstInfo = new WebCrawlerInfo().withAlternates(DUMMY_ALTERNATE);
         WebCrawlerInfo secondInfo = new WebCrawlerInfo().withAlternates(OTHER_DUMMY_ALTERNATE);
-        assertThat(firstInfo, is(not(equalTo(secondInfo))));
+        assertThat(firstInfo).isNotEqualTo(secondInfo);
     }
 
     @Test
     public void isDifferentFromInfoWithOtherCanonical() {
         WebCrawlerInfo firstInfo = new WebCrawlerInfo().withCanonical("first canonical");
         WebCrawlerInfo secondInfo = new WebCrawlerInfo().withCanonical("second canonical");
-        assertThat(firstInfo, is(not(equalTo(secondInfo))));
+        assertThat(firstInfo).isNotEqualTo(secondInfo);
     }
 
     @Test
     public void isDifferentFromInfoWithOtherDescription() {
         WebCrawlerInfo firstInfo = new WebCrawlerInfo().withDescription("first description");
         WebCrawlerInfo secondInfo = new WebCrawlerInfo().withDescription("second description");
-        assertThat(firstInfo, is(not(equalTo(secondInfo))));
+        assertThat(firstInfo).isNotEqualTo(secondInfo);
     }
 
     @Test
     public void isDifferentFromInfoWithOtherDisabledGoogleFeatures() {
         WebCrawlerInfo firstInfo = new WebCrawlerInfo().disableGoogleFeatures(SITELINKS_SEARCH_BOX);
         WebCrawlerInfo secondInfo = new WebCrawlerInfo().disableGoogleFeatures(TRANSLATION);
-        assertThat(firstInfo, is(not(equalTo(secondInfo))));
+        assertThat(firstInfo).isNotEqualTo(secondInfo);
     }
 
     @Test
     public void isDifferentFromInfoWithOtherKeywords() {
         WebCrawlerInfo firstInfo = new WebCrawlerInfo().withKeywords("first keywords");
         WebCrawlerInfo secondInfo = new WebCrawlerInfo().withKeywords("second keywords");
-        assertThat(firstInfo, is(not(equalTo(secondInfo))));
+        assertThat(firstInfo).isNotEqualTo(secondInfo);
     }
 }
