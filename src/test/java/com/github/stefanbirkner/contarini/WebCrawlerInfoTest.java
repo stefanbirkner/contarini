@@ -4,6 +4,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.github.stefanbirkner.contarini.Alternate.alternateLanguage;
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_ARCHIVE;
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.NO_INDEX;
@@ -24,21 +27,24 @@ public class WebCrawlerInfoTest {
     @Test
     public void makesListOfAdvicesUnmodifiable() {
         thrown.expect(UnsupportedOperationException.class);
-        WebCrawlerInfo info = new WebCrawlerInfo().withAdvices(DUMMY_ADVICE);
+        WebCrawlerInfo info = new WebCrawlerInfo()
+            .withAdvices(modifiableList(DUMMY_ADVICE));
         info.getAdvices().add(OTHER_DUMMY_ADVICE);
     }
 
     @Test
     public void makesListOfAlternatesUnmodifiable() {
         thrown.expect(UnsupportedOperationException.class);
-        WebCrawlerInfo info = new WebCrawlerInfo().withAlternates(DUMMY_ALTERNATE);
+        WebCrawlerInfo info = new WebCrawlerInfo().
+            withAlternates(modifiableList(DUMMY_ALTERNATE));
         info.getAlternates().add(OTHER_DUMMY_ALTERNATE);
     }
 
     @Test
     public void makesListOfDisabledGoogleFeaturesUnmodifiable() {
         thrown.expect(UnsupportedOperationException.class);
-        WebCrawlerInfo info = new WebCrawlerInfo().disableGoogleFeatures(SITELINKS_SEARCH_BOX);
+        WebCrawlerInfo info = new WebCrawlerInfo()
+            .disableGoogleFeatures(modifiableList(SITELINKS_SEARCH_BOX));
         info.getDisabledGoogleFeatures().add(TRANSLATION);
     }
 
@@ -103,5 +109,11 @@ public class WebCrawlerInfoTest {
         WebCrawlerInfo firstInfo = new WebCrawlerInfo().withKeywords("first keywords");
         WebCrawlerInfo secondInfo = new WebCrawlerInfo().withKeywords("second keywords");
         assertThat(firstInfo).isNotEqualTo(secondInfo);
+    }
+
+    private <T> List<T> modifiableList(T item) {
+        List<T> list = new ArrayList<T>();
+        list.add(item);
+        return list;
     }
 }

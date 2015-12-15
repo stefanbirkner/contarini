@@ -4,6 +4,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
 
 /**
  * Presentation model for web crawler tags. A {@code WebCrawlerInfo} is
@@ -89,6 +90,7 @@ public class WebCrawlerInfo {
      * @return a list of advices for the robots meta tag. Never
      * returns {@code null}.
      * @see #withAdvices(WebCrawlerAdvice...)
+     * @see #withAdvices(List)
      */
     public List<WebCrawlerAdvice> getAdvices() {
         return advices;
@@ -101,9 +103,24 @@ public class WebCrawlerInfo {
      * @param advices a list of advices for the robots meta tag.
      * @return a new {@code WebCrawlerInfo} object.
      * @see #getAdvices()
+     * @see #withAdvices(List)
      */
     public WebCrawlerInfo withAdvices(WebCrawlerAdvice... advices) {
-        return new WebCrawlerInfo(canonical, asList(advices), alternates, description, disabledGoogleFeatures, keywords);
+        return withAdvices(asList(advices));
+    }
+
+    /**
+     * Creates a new {@code WebCrawlerInfo} with a different list of
+     * advices for the robots meta tag. The other properties are taken
+     * from the current object.
+     * @param advices a list of advices for the robots meta tag.
+     * @return a new {@code WebCrawlerInfo} object.
+     * @see #getAdvices()
+     * @see #withAdvices(WebCrawlerAdvice...)
+     */
+    public WebCrawlerInfo withAdvices(List<WebCrawlerAdvice> advices) {
+        return new WebCrawlerInfo(canonical, unmodifiableList(advices),
+            alternates, description, disabledGoogleFeatures, keywords);
     }
 
     /**
@@ -113,11 +130,11 @@ public class WebCrawlerInfo {
      * @return a list of advices for the alternate link tag. Never
      * returns {@code null}.
      * @see #withAlternates(Alternate...)
+     * @see #withAlternates(List)
      */
     public List<Alternate> getAlternates() {
         return alternates;
     }
-
 
     /**
      * Creates a new {@code WebCrawlerInfo} with a different list of
@@ -127,9 +144,26 @@ public class WebCrawlerInfo {
      *                   link tag.
      * @return a new {@code WebCrawlerInfo} object.
      * @see #getAlternates()
+     * @see #withAlternates(List)
      */
     public WebCrawlerInfo withAlternates(Alternate... alternates) {
-        return new WebCrawlerInfo(canonical, advices, asList(alternates), description, disabledGoogleFeatures, keywords);
+        return withAlternates(asList(alternates));
+    }
+
+    /**
+     * Creates a new {@code WebCrawlerInfo} with a different list of
+     * alternates. The other properties are taken from the current
+     * object.
+     * @param alternates a list of alternates for the corresponding
+     *                   link tag.
+     * @return a new {@code WebCrawlerInfo} object.
+     * @see #getAlternates()
+     * @see #withAlternates(Alternate...)
+     */
+    public WebCrawlerInfo withAlternates(List<Alternate> alternates) {
+        return new WebCrawlerInfo(canonical, advices,
+            unmodifiableList(alternates), description, disabledGoogleFeatures,
+            keywords);
     }
 
     /**
@@ -161,6 +195,7 @@ public class WebCrawlerInfo {
      * @return a list of Google features that should be disabled. Never
      * returns {@code null}.
      * @see #disableGoogleFeatures(GoogleFeature...)
+     * @see #disableGoogleFeatures(List)
      */
     public List<GoogleFeature> getDisabledGoogleFeatures() {
         return disabledGoogleFeatures;
@@ -173,9 +208,24 @@ public class WebCrawlerInfo {
      * @param features a list of Google features that should be disabled.
      * @return a new {@code WebCrawlerInfo} object.
      * @see #getDisabledGoogleFeatures()
+     * @see #disableGoogleFeatures(List)
      */
     public WebCrawlerInfo disableGoogleFeatures(GoogleFeature... features) {
-        return new WebCrawlerInfo(canonical, advices, alternates, description, asList(features), keywords);
+        return disableGoogleFeatures(asList(features));
+    }
+
+    /**
+     * Creates a new {@code WebCrawlerInfo} with a different list of
+     * Google features that should be disabled. The other properties are
+     * taken from the current object.
+     * @param features a list of Google features that should be disabled.
+     * @return a new {@code WebCrawlerInfo} object.
+     * @see #disableGoogleFeatures(GoogleFeature...)
+     * @see #getDisabledGoogleFeatures()
+     */
+    public WebCrawlerInfo disableGoogleFeatures(List<GoogleFeature> features) {
+        return new WebCrawlerInfo(canonical, advices, alternates, description,
+            unmodifiableList(features), keywords);
     }
 
     /**
