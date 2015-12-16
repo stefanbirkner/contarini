@@ -16,6 +16,7 @@ Contarini's well-tested renderer creates the HTML.</section>
 import com.github.stefanbirkner.contarini.render.*;
 
 import static com.github.stefanbirkner.contarini.CommonWebCrawlerAdvice.*;
+import static com.github.stefanbirkner.contarini.Alternate.*;
 import static com.github.stefanbirkner.contarini.GoogleFeature.*;
 import static com.github.stefanbirkner.contarini.render.VoidElementStyle.*;
 …
@@ -26,8 +27,8 @@ WebCrawlerInfo info = new WebCrawlerInfo()
     .withKeywords("first keyword, second keyword")
     .withAdvices(NO_ARCHIVE, NO_FOLLOW)
     .withAlternates(
-        new Alternate("en-gb", "http://your.domain.co.uk/page")
-        new Alternate("de", "http://your.domain.de/seite"))
+        alternateLanguage("en-gb", "http://your.domain.co.uk/page")
+        alternateMedia("only screen and (max-width: 640px)", "http://m.your.domain.com/page"))
     .disableGoogleFeatures(SITELINKS_SEARCH_BOX, TRANSLATION);
 Style style = new Style().withVoidElementStyle(HTML_VOID);
 WebCrawlerInfoRenderer renderer = new WebCrawlerInfoRenderer(style);
@@ -42,7 +43,7 @@ renderer.write(info, html);
 <meta name="keywords" content="first keyword, second keyword">
 <meta name="robots" content="noarchive, nofollow">
 <link rel="alternate" hreflang="en-gb" href="http://your.domain.co.uk/page">
-<link rel="alternate" hreflang="de" href="http://your.domain.de/seite">
+<link rel="alternate" media="only screen and (max-width: 640px)" href="http://m.your.domain.com/page">
 <meta name="google" content="nositelinkssearchbox">
 <meta name="google" content="notranslate">
 {% endhighlight %}
@@ -58,7 +59,7 @@ renderer.write(info, html);
 			<pre>&lt;dependency&gt;
   &lt;groupId&gt;com.github.stefanbirkner&lt;/groupId&gt;
   &lt;artifactId&gt;contarini&lt;/artifactId&gt;
-  &lt;version&gt;0.7.0&lt;/version&gt;
+  &lt;version&gt;1.2.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 		</li>
 		<li>
